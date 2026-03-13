@@ -21,36 +21,60 @@ Extra usage       Unlimited
 - **Git info** — current branch + changed files count
 - **Color-coded bars** — green (<50%), yellow (50-79%), red (>=80%)
 - **Smart caching** — API called every 2 min max (avoids 429 rate limits)
-- **Cross-platform** — Linux + macOS (Keychain + credentials file)
+- **Cross-platform** — Linux, macOS, and Windows
 
 ## Install
 
+### Linux / macOS
+
 ```bash
 curl -sL https://raw.githubusercontent.com/MarcosDemik/claude-statusline/main/install.sh | bash
+```
+
+### Windows (PowerShell)
+
+```powershell
+irm https://raw.githubusercontent.com/MarcosDemik/claude-statusline/main/install.ps1 | iex
 ```
 
 Then restart Claude Code.
 
 ### Requirements
 
-- [Claude Code](https://claude.ai/code) CLI (logged in)
-- `jq` — `sudo apt install jq` (Linux) or `brew install jq` (macOS)
-- `curl`
+| | Linux | macOS | Windows |
+|---|---|---|---|
+| Claude Code CLI | Yes | Yes | Yes |
+| `jq` | `sudo apt install jq` | `brew install jq` | Not needed |
+| `curl` | Yes | Yes | Not needed |
+| `git` | Optional | Optional | Optional |
 
 ## How it works
 
 1. **Context Window** — read from Claude Code's statusline JSON input (exact)
 2. **Session / Weekly** — fetched from `api.anthropic.com/api/oauth/usage` using your OAuth token
-3. **Cache** — stored at `/tmp/.claude-usage-cache-{uid}.json`, refreshed every 2 minutes
-4. **Credentials** — read from macOS Keychain (`Claude Code-credentials`) or `~/.claude/.credentials.json` (Linux)
+3. **Cache** — refreshed every 2 minutes to avoid 429 rate limits
+   - Linux/macOS: `/tmp/.claude-usage-cache-{uid}.json`
+   - Windows: `%TEMP%\.claude-usage-cache.json`
+4. **Credentials** — read from:
+   - macOS: Keychain (`Claude Code-credentials`) or `~/.claude/.credentials.json`
+   - Linux: `~/.claude/.credentials.json`
+   - Windows: `%USERPROFILE%\.claude\.credentials.json`
 
 ## Uninstall
+
+### Linux / macOS
 
 ```bash
 rm ~/.claude/statusline-command.sh /tmp/.claude-usage-cache-*.json
 ```
 
-Then remove the `"statusLine"` key from `~/.claude/settings.json`.
+### Windows
+
+```powershell
+Remove-Item "$env:USERPROFILE\.claude\statusline-command.ps1", "$env:TEMP\.claude-usage-cache.json" -ErrorAction SilentlyContinue
+```
+
+Then remove the `"statusLine"` key from your `settings.json` (`~/.claude/settings.json`).
 
 ## License
 
