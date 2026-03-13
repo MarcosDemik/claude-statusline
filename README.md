@@ -1,6 +1,6 @@
 # Claude Code Status Line
 
-Real-time usage monitoring for [Claude Code](https://claude.ai/code) CLI. Shows **actual** session and weekly rate limits from the Anthropic API -not estimates.
+Real-time usage monitoring for [Claude Code](https://claude.ai/code) CLI. Shows **actual** session and weekly rate limits from the Anthropic API - not estimates.
 
 ![preview](preview.png)
 
@@ -15,13 +15,13 @@ Extra usage       Unlimited
 
 ## Features
 
-- **Real data** from `api.anthropic.com/api/oauth/usage` -not heuristics
+- **Real data** from `api.anthropic.com/api/oauth/usage` - not heuristics
 - **Session** (5h window) and **Weekly** (7d window) usage with reset timers
 - **Context window** percentage from Claude Code's internal data
-- **Git info** -current branch + changed files count
-- **Color-coded bars** -green (<50%), yellow (50-79%), red (>=80%)
-- **Smart caching** -API called every 2 min max (avoids 429 rate limits)
-- **Cross-platform** -Linux, macOS, and Windows
+- **Git info** - current branch + changed files count
+- **Color-coded bars** - green (<50%), yellow (50-79%), red (>=80%)
+- **Smart caching** - API called every 2 min max (avoids 429 rate limits)
+- **Cross-platform** - Linux, macOS, and Windows
 
 ## Install
 
@@ -50,12 +50,12 @@ Then restart Claude Code.
 
 ## How it works
 
-1. **Context Window** -read from Claude Code's statusline JSON input (exact)
-2. **Session / Weekly** -fetched from `api.anthropic.com/api/oauth/usage` using your OAuth token
-3. **Cache** -refreshed every 2 minutes to avoid 429 rate limits
+1. **Context Window** - read from Claude Code's statusline JSON input (exact)
+2. **Session / Weekly** - fetched from `api.anthropic.com/api/oauth/usage` using your OAuth token
+3. **Cache** - refreshed every 2 minutes to avoid 429 rate limits
    - Linux/macOS: `/tmp/.claude-usage-cache-{uid}.json`
    - Windows: `%TEMP%\.claude-usage-cache.json`
-4. **Credentials** -read from:
+4. **Credentials** - read from:
    - macOS: Keychain (`Claude Code-credentials`) or `~/.claude/.credentials.json`
    - Linux: `~/.claude/.credentials.json`
    - Windows: `%USERPROFILE%\.claude\.credentials.json`

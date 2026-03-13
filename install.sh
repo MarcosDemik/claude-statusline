@@ -5,7 +5,7 @@
 #
 # Usage:
 #   curl -sL https://raw.githubusercontent.com/MarcosDemik/claude-statusline/main/install.sh | bash
-#   -or —
+#   - or -
 #   bash install-statusline.sh
 #
 # Requirements: jq, curl, git (optional), Claude Code CLI

@@ -4,7 +4,7 @@
 #
 # Usage:
 #   irm https://raw.githubusercontent.com/MarcosDemik/claude-statusline/main/install.ps1 | iex
-#   -or —
+#   - or -
 #   .\install.ps1
 #
 # Requirements: Claude Code CLI (logged in), git (optional)
