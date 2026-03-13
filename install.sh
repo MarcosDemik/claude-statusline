@@ -5,7 +5,7 @@
 #
 # Usage:
 #   curl -sL https://raw.githubusercontent.com/MarcosDemik/claude-statusline/main/install.sh | bash
-#   — or —
+#   -or —
 #   bash install-statusline.sh
 #
 # Requirements: jq, curl, git (optional), Claude Code CLI
@@ -59,7 +59,7 @@ info "Escrevendo $SCRIPT_FILE..."
 
 cat > "$SCRIPT_FILE" << 'STATUSLINE_EOF'
 #!/usr/bin/env bash
-# Claude Code Status Line — Real usage data from Anthropic API
+# Claude Code Status Line -Real usage data from Anthropic API
 # github.com/MarcosDemik/claude-statusline
 
 input=$(cat)
@@ -233,7 +233,7 @@ GRAY='\033[90m'
 MAGENTA='\033[35m'
 
 # ---------------------------------------------------------------------------
-# Progress bar — 15 chars wide
+# Progress bar -15 chars wide
 # ---------------------------------------------------------------------------
 bar() {
   local pct=$1 width=15 filled=0
@@ -292,14 +292,14 @@ printf "${BOLD}%-${LW}s${R} ${ctx_c}%s${R}  ${GRAY}%d%% of %s${R}\n" \
 # Line 3: Separator
 printf "${DIM}%s${R}\n" "$SEP"
 
-# Line 4: Session — 5h window
+# Line 4: Session -5h window
 sess_c=$(bar_color "$session_pct")
 sess_extra=""
 [ -n "$session_reset" ] && sess_extra=" · $session_reset"
 printf "${BOLD}%-${LW}s${R} ${sess_c}%s${R}  ${GRAY}%d%% used%s${R}\n" \
   "Session" "$(bar "$session_pct")" "$session_pct" "$sess_extra"
 
-# Line 5: Weekly — 7d window
+# Line 5: Weekly -7d window
 week_c=$(bar_color "$weekly_pct")
 week_extra=""
 [ -n "$weekly_reset" ] && week_extra=" · $weekly_reset"

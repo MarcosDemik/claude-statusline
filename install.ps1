@@ -4,11 +4,11 @@
 #
 # Usage:
 #   irm https://raw.githubusercontent.com/MarcosDemik/claude-statusline/main/install.ps1 | iex
-#   — or —
+#   -or —
 #   .\install.ps1
 #
 # Requirements: Claude Code CLI (logged in), git (optional)
-# No external dependencies (jq/curl not needed — uses native PowerShell)
+# No external dependencies (jq/curl not needed -uses native PowerShell)
 # ============================================================================
 
 $ErrorActionPreference = "Stop"
@@ -37,7 +37,7 @@ Write-Host ""
 Write-Info "Escrevendo $SCRIPT_FILE..."
 
 $statuslineScript = @'
-# Claude Code Status Line — Real usage data from Anthropic API (Windows)
+# Claude Code Status Line -Real usage data from Anthropic API (Windows)
 # github.com/MarcosDemik/claude-statusline
 
 $input_data = $input | ConvertFrom-Json
@@ -176,7 +176,7 @@ $GRAY    = "$e[90m"
 $MAGENTA = "$e[35m"
 
 # ---------------------------------------------------------------------------
-# Progress bar — 15 chars wide
+# Progress bar -15 chars wide
 # ---------------------------------------------------------------------------
 function Get-Bar($pct) {
     $width = 15
