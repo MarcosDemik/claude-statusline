@@ -281,34 +281,34 @@ SEP="─────────────────────────
 LW=17
 
 # Line 1: model | user | dir (branch) N changed
-printf "${CYAN}${BOLD}%s${R} ${GRAY}|${R} ${WHITE}%s${R} ${GRAY}|${R} ${WHITE}%s${R}${MAGENTA}%s${R}\n" \
+printf "${CYAN}%s${R} ${GRAY}|${R} ${WHITE}%s${R} ${GRAY}|${R} ${WHITE}%s${R}${MAGENTA}%s${R}\n" \
   "$model_short" "$user" "$dir" "$git_info"
 
 # Line 2: Context Window
 ctx_c=$(bar_color "$ctx_pct")
-printf "${BOLD}%-${LW}s${R} ${ctx_c}%s${R}  ${GRAY}%d%% of %s${R}\n" \
+printf "${WHITE}%-${LW}s${R} ${ctx_c}%s${R}  ${GRAY}%d%% of %s${R}\n" \
   "Context Window" "$(bar "$ctx_pct")" "$ctx_pct" "$ctx_size_k"
 
 # Line 3: Separator
 printf "${DIM}%s${R}\n" "$SEP"
 
-# Line 4: Session -5h window
+# Line 4: Session - 5h window
 sess_c=$(bar_color "$session_pct")
 sess_extra=""
 [ -n "$session_reset" ] && sess_extra=" · $session_reset"
-printf "${BOLD}%-${LW}s${R} ${sess_c}%s${R}  ${GRAY}%d%% used%s${R}\n" \
+printf "${WHITE}%-${LW}s${R} ${sess_c}%s${R}  ${GRAY}%d%% used%s${R}\n" \
   "Session" "$(bar "$session_pct")" "$session_pct" "$sess_extra"
 
-# Line 5: Weekly -7d window
+# Line 5: Weekly - 7d window
 week_c=$(bar_color "$weekly_pct")
 week_extra=""
 [ -n "$weekly_reset" ] && week_extra=" · $weekly_reset"
-printf "${BOLD}%-${LW}s${R} ${week_c}%s${R}  ${GRAY}%d%% used%s${R}\n" \
+printf "${WHITE}%-${LW}s${R} ${week_c}%s${R}  ${GRAY}%d%% used%s${R}\n" \
   "Weekly" "$(bar "$weekly_pct")" "$weekly_pct" "$week_extra"
 
 # Line 6: Extra usage (if enabled)
 if [ -n "$extra_info" ]; then
-  printf "${BOLD}%-${LW}s${R} ${GREEN}%s${R}\n" \
+  printf "${WHITE}%-${LW}s${R} ${GREEN}%s${R}\n" \
     "Extra usage" "$extra_info"
 fi
 STATUSLINE_EOF

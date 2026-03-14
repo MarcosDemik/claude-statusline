@@ -205,14 +205,14 @@ $SEP = [string]::new([char]0x2500, 41)
 $LW = 17
 
 # Line 1: model | user | dir (branch) N changed
-$line1 = "${CYAN}${BOLD}$model_short${R} ${GRAY}|${R} ${WHITE}$user${R} ${GRAY}|${R} ${WHITE}$dir${R}${MAGENTA}$git_info${R}"
+$line1 = "${CYAN}$model_short${R} ${GRAY}|${R} ${WHITE}$user${R} ${GRAY}|${R} ${WHITE}$dir${R}${MAGENTA}$git_info${R}"
 Write-Host $line1
 
 # Line 2: Context Window
 $ctx_c = Get-BarColor $used_pct
 $ctx_bar = Get-Bar $used_pct
 $label = "Context Window".PadRight($LW)
-Write-Host "${BOLD}$label${R} ${ctx_c}$ctx_bar${R}  ${GRAY}$used_pct% of $ctx_size_k${R}"
+Write-Host "${WHITE}$label${R} ${ctx_c}$ctx_bar${R}  ${GRAY}$used_pct% of $ctx_size_k${R}"
 
 # Line 3: Separator
 Write-Host "${DIM}$SEP${R}"
@@ -222,19 +222,19 @@ $sess_c = Get-BarColor $session_pct
 $sess_bar = Get-Bar $session_pct
 $sess_extra = if ($session_reset) { " $([char]0x00B7) $session_reset" } else { "" }
 $label = "Session".PadRight($LW)
-Write-Host "${BOLD}$label${R} ${sess_c}$sess_bar${R}  ${GRAY}$session_pct% used$sess_extra${R}"
+Write-Host "${WHITE}$label${R} ${sess_c}$sess_bar${R}  ${GRAY}$session_pct% used$sess_extra${R}"
 
 # Line 5: Weekly
 $week_c = Get-BarColor $weekly_pct
 $week_bar = Get-Bar $weekly_pct
 $week_extra = if ($weekly_reset) { " $([char]0x00B7) $weekly_reset" } else { "" }
 $label = "Weekly".PadRight($LW)
-Write-Host "${BOLD}$label${R} ${week_c}$week_bar${R}  ${GRAY}$weekly_pct% used$week_extra${R}"
+Write-Host "${WHITE}$label${R} ${week_c}$week_bar${R}  ${GRAY}$weekly_pct% used$week_extra${R}"
 
 # Line 6: Extra usage
 if ($extra_info) {
     $label = "Extra usage".PadRight($LW)
-    Write-Host "${BOLD}$label${R} ${GREEN}$extra_info${R}"
+    Write-Host "${WHITE}$label${R} ${GREEN}$extra_info${R}"
 }
 '@
 
