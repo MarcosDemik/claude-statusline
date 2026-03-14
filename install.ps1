@@ -188,7 +188,7 @@ function Get-Bar($pct) {
     $filled = [Math]::Min([Math]::Floor($pct * $width / 100), $width)
     if ($pct -gt 0 -and $filled -eq 0) { $filled = 1 }
     $empty = $width - $filled
-    return ([string]::new([char]0x2588, $filled) + [string]::new([char]0x2591, $empty))
+    return ([string]::new([char]'#', $filled) + [string]::new([char]'.', $empty))
 }
 
 function Get-BarColor($pct) {
@@ -206,7 +206,7 @@ function Format-K($n) {
 # Print
 # ---------------------------------------------------------------------------
 $ctx_size_k = Format-K $ctx_size
-$SEP = [string]::new([char]0x2500, 41)
+$SEP = [string]::new([char]'-', 41)
 $LW = 17
 
 # Line 1: model | user | dir (branch) N changed
@@ -225,14 +225,14 @@ Write-Host "${DIM}$SEP${R}"
 # Line 4: Session
 $sess_c = Get-BarColor $session_pct
 $sess_bar = Get-Bar $session_pct
-$sess_extra = if ($session_reset) { " $([char]0x00B7) $session_reset" } else { "" }
+$sess_extra = if ($session_reset) { " | $session_reset" } else { "" }
 $label = "Session".PadRight($LW)
 Write-Host "${WHITE}$label${R} ${sess_c}$sess_bar${R}  ${GRAY}$session_pct% used$sess_extra${R}"
 
 # Line 5: Weekly
 $week_c = Get-BarColor $weekly_pct
 $week_bar = Get-Bar $weekly_pct
-$week_extra = if ($weekly_reset) { " $([char]0x00B7) $weekly_reset" } else { "" }
+$week_extra = if ($weekly_reset) { " | $weekly_reset" } else { "" }
 $label = "Weekly".PadRight($LW)
 Write-Host "${WHITE}$label${R} ${week_c}$week_bar${R}  ${GRAY}$weekly_pct% used$week_extra${R}"
 
@@ -256,11 +256,11 @@ if (-not (Test-Path $SETTINGS_FILE)) {
 }
 
 $raw = Get-Content $SETTINGS_FILE -Raw
-$cmd = "powershell -NoProfile -File \`"$SCRIPT_FILE\`""
+$cmd_escaped = $SCRIPT_FILE.Replace('\', '\\')
 $statusLineBlock = @"
   "statusLine": {
     "type": "command",
-    "command": "$cmd"
+    "command": "powershell -NoProfile -File \"$cmd_escaped\""
   }
 "@
 
