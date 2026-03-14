@@ -247,7 +247,7 @@ Set-Content -Path $SCRIPT_FILE -Value $statuslineScript -Encoding UTF8
 Write-Ok "Script salvo em $SCRIPT_FILE"
 
 # ---------------------------------------------------------------------------
-# Update settings.json
+# Update settings.json (raw text manipulation to preserve existing encoding)
 # ---------------------------------------------------------------------------
 Write-Info "Atualizando $SETTINGS_FILE..."
 
@@ -255,15 +255,32 @@ if (-not (Test-Path $SETTINGS_FILE)) {
     '{}' | Set-Content $SETTINGS_FILE -Encoding UTF8
 }
 
-$settings = Get-Content $SETTINGS_FILE -Raw | ConvertFrom-Json
-$cmd = "powershell -NoProfile -File `"$SCRIPT_FILE`""
-$statusLine = [PSCustomObject]@{ type = "command"; command = $cmd }
-if ($settings.PSObject.Properties["statusLine"]) {
-    $settings.statusLine = $statusLine
+$raw = Get-Content $SETTINGS_FILE -Raw
+$cmd = "powershell -NoProfile -File \`"$SCRIPT_FILE\`""
+$statusLineBlock = @"
+  "statusLine": {
+    "type": "command",
+    "command": "$cmd"
+  }
+"@
+
+if ($raw -match '"statusLine"') {
+    # Replace existing statusLine block (handles multi-line object)
+    $raw = $raw -replace '(?s)"statusLine"\s*:\s*\{[^}]*\}', $statusLineBlock.Trim()
 } else {
-    $settings | Add-Member -NotePropertyName "statusLine" -NotePropertyValue $statusLine
+    # Insert before the last closing brace
+    $lastBrace = $raw.LastIndexOf('}')
+    if ($lastBrace -gt 0) {
+        $before = $raw.Substring(0, $lastBrace).TrimEnd()
+        # Add comma if the previous content doesn't end with one
+        if (-not $before.EndsWith(',') -and -not $before.EndsWith('{')) {
+            $before += ','
+        }
+        $raw = $before + "`n" + $statusLineBlock + "`n}"
+    }
 }
-$settings | ConvertTo-Json -Depth 10 | Set-Content $SETTINGS_FILE -Encoding UTF8
+
+[System.IO.File]::WriteAllText($SETTINGS_FILE, $raw, [System.Text.Encoding]::UTF8)
 
 Write-Ok "settings.json atualizado"
 
