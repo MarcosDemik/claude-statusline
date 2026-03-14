@@ -47,8 +47,13 @@ $input_data = $input | ConvertFrom-Json
 # ---------------------------------------------------------------------------
 $model_full = if ($input_data.model.display_name) { $input_data.model.display_name } else { "Claude" }
 $cwd = if ($input_data.workspace.current_dir) { $input_data.workspace.current_dir } elseif ($input_data.cwd) { $input_data.cwd } else { "" }
-$used_pct = if ($null -ne $input_data.context_window.used_percentage) { [int]$input_data.context_window.used_percentage } else { 0 }
 $ctx_size = if ($null -ne $input_data.context_window.context_window_size) { [int]$input_data.context_window.context_window_size } else { 200000 }
+$cur_in = if ($input_data.context_window.current_usage.input_tokens) { [int]$input_data.context_window.current_usage.input_tokens } else { 0 }
+$cur_out = if ($input_data.context_window.current_usage.output_tokens) { [int]$input_data.context_window.current_usage.output_tokens } else { 0 }
+$cur_cache_create = if ($input_data.context_window.current_usage.cache_creation_input_tokens) { [int]$input_data.context_window.current_usage.cache_creation_input_tokens } else { 0 }
+$cur_cache_read = if ($input_data.context_window.current_usage.cache_read_input_tokens) { [int]$input_data.context_window.current_usage.cache_read_input_tokens } else { 0 }
+$total_ctx = $cur_in + $cur_out + $cur_cache_create + $cur_cache_read
+$used_pct = if ($ctx_size -gt 0 -and $total_ctx -gt 0) { [Math]::Min([int]($total_ctx * 100 / $ctx_size), 100) } else { 0 }
 
 # ---------------------------------------------------------------------------
 # Model + directory + git

@@ -69,8 +69,11 @@ input=$(cat)
 # ---------------------------------------------------------------------------
 model_full=$(echo "$input" | jq -r '.model.display_name // "Claude"')
 cwd=$(echo "$input"        | jq -r '.workspace.current_dir // .cwd // ""')
-used_pct=$(echo "$input"   | jq -r '.context_window.used_percentage // 0')
 ctx_size=$(echo "$input"   | jq -r '.context_window.context_window_size // 200000')
+cur_in=$(echo "$input"     | jq -r '.context_window.current_usage.input_tokens // 0')
+cur_out=$(echo "$input"    | jq -r '.context_window.current_usage.output_tokens // 0')
+cur_cache_create=$(echo "$input" | jq -r '.context_window.current_usage.cache_creation_input_tokens // 0')
+cur_cache_read=$(echo "$input"   | jq -r '.context_window.current_usage.cache_read_input_tokens // 0')
 
 # ---------------------------------------------------------------------------
 # Model + directory + git
@@ -274,8 +277,13 @@ fmt_k() {
 # Print
 # ---------------------------------------------------------------------------
 ctx_size_k=$(fmt_k "$ctx_size")
-ctx_pct="${used_pct%%.*}"
-[ -z "$ctx_pct" ] && ctx_pct=0
+total_ctx_tokens=$(( cur_in + cur_out + cur_cache_create + cur_cache_read ))
+if [ "$ctx_size" -gt 0 ] 2>/dev/null && [ "$total_ctx_tokens" -gt 0 ]; then
+  ctx_pct=$(( total_ctx_tokens * 100 / ctx_size ))
+  [ "$ctx_pct" -gt 100 ] && ctx_pct=100
+else
+  ctx_pct=0
+fi
 
 SEP="─────────────────────────────────────────"
 LW=17
